@@ -1,10 +1,11 @@
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 
 import java.io.IOException;
 
-public class Listeners extends testUtils implements ITestListener {
+public class CustomListeners extends TestUtils implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
@@ -18,12 +19,19 @@ public class Listeners extends testUtils implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("Test");
+        System.setProperty("org.uncommons.reportng.escape-output","false");
         try {
-            getScreenshot();
+            TestUtils.captureScreenshot();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Reporter.log("<a target=\"_blank\" href="+ TestUtils.screenshotName2+">Screenshot</a>");
+        Reporter.log("<br>");
+        Reporter.log("<a target=\"_blank\" href="+ TestUtils.screenshotName2+"><img src="+ TestUtils.screenshotName2+" height=200 width=200></img></a>");
+
+
+
     }
 
     @Override
